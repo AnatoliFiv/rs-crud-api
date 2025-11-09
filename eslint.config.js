@@ -9,6 +9,8 @@ const tsRules = {
     'warn',
     { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
   ],
+  quotes: ['error', 'single', { avoidEscape: true }],
+  'quote-props': ['error', 'as-needed'],
 };
 
 const tsParserOptions = {
