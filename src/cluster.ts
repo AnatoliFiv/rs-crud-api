@@ -17,7 +17,7 @@ import type {
 import { createRouter } from './app/router.js';
 import { HttpMessage } from './http/messages.js';
 import { HttpStatus } from './http/status-codes.js';
-dotenv.config();
+dotenv.config({ quiet: true });
 
 interface WorkerInfo {
   worker: Worker;

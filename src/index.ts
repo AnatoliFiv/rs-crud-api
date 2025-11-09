@@ -1,5 +1,7 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import { createServer } from './app/index.js';
+
+dotenv.config({ quiet: true });
 
 const normalizePort = (value: string | undefined): number => {
   if (!value) return 4000;
