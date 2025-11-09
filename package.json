@@ -1,7 +1,7 @@
 {
   "name": "rs-crud-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple CRUD API with multi-process load balancing for RS School assignment",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -9,19 +9,20 @@
     "start": "node dist/index.js",
     "start:dev": "cross-env NODE_ENV=development nodemon",
     "start:prod": "npm run build && npm run start",
-    "test": "jest"
+    "start:multi": "npm run build && cross-env NODE_ENV=production node dist/cluster.js",
+    "test": "jest",
+    "format": "npm run lint -- --fix"
   },
   "keywords": [],
   "author": "Anatoly Fiventsau",
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "dotenv": "^17.2.3",
-    "uuid": "^13.0.0"
+    "dotenv": "^17.2.3"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
-    "@types/uuid": "^9.0.8",
+    "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.46.3",
     "@typescript-eslint/parser": "^8.46.3",
     "cross-env": "^10.1.0",
