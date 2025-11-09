@@ -1,7 +1,7 @@
 {
   "name": "rs-crud-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Simple CRUD API with multi-process load balancing for RS School assignment",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -9,6 +9,7 @@
     "start": "node dist/index.js",
     "start:dev": "cross-env NODE_ENV=development nodemon",
     "start:prod": "npm run build && npm run start",
+    "start:multi": "npm run build && cross-env NODE_ENV=production node dist/cluster.js",
     "test": "jest",
     "format": "npm run lint -- --fix"
   },
