@@ -169,6 +169,12 @@ if (cluster.isPrimary) {
     const target = workers[currentWorkerIndex];
     currentWorkerIndex = (currentWorkerIndex + 1) % workers.length;
 
+    console.log(
+      `[balancer] ${req.method ?? 'UNKNOWN'} ${req.url ?? ''} -> worker ${
+        target.worker.process.pid
+      } (port ${target.port})`
+    );
+
     const proxyRequest = http.request(
       {
         hostname: 'localhost',
@@ -219,6 +225,9 @@ if (cluster.isPrimary) {
 
   const routerHandler = createRouter(workerPort);
   const server = http.createServer((req, res) => {
+    console.log(
+      `[worker ${process.pid}] ${req.method ?? 'UNKNOWN'} ${req.url ?? ''}`
+    );
     routerHandler(req, res).catch((error) => {
       console.error('Worker error:', error);
       res.writeHead(HttpStatus.INTERNAL_SERVER_ERROR, {

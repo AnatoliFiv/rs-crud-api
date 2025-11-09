@@ -8,7 +8,8 @@ const normalizePort = (value: string | undefined): number => {
 
   const parsed = Number(value);
 
-  if (!Number.isFinite(parsed) || parsed <= 0) throw new Error(`Invalid PORT value: ${value}`);
+  if (!Number.isFinite(parsed) || parsed <= 0)
+    throw new Error(`Invalid PORT value: ${value}`);
 
   return parsed;
 };
