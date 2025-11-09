@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'node:crypto';
 import { NotFoundError } from '../../errors/http-error.js';
 import type { User, UserPayload, UserUpdatePayload } from './types.js';
 import {
@@ -29,7 +29,7 @@ export async function createUser(data: UserPayload): Promise<User> {
   assertUserPayload(data);
 
   const newUser: User = {
-    id: uuidv4(),
+    id: randomUUID(),
     username: data.username,
     age: data.age,
     hobbies: data.hobbies,

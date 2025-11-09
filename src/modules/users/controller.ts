@@ -1,5 +1,6 @@
 import type http from 'node:http';
 import { parseJsonBody, sendJson } from '../../http/index.js';
+import { HttpStatus } from '../../http/status-codes.js';
 import type { UserPayload, UserUpdatePayload } from './types.js';
 import {
   createUser,
@@ -23,29 +24,29 @@ type ControllerWithId = (context: ControllerWithIdContext) => Promise<void>;
 
 const listUsers: Controller = async ({ res }) => {
   const users = await getAllUsers();
-  sendJson(res, 200, users);
+  sendJson(res, HttpStatus.OK, users);
 };
 
 const createUserController: Controller = async ({ req, res }) => {
   const payload = await parseJsonBody<UserPayload>(req);
   const user = await createUser(payload);
-  sendJson(res, 201, user);
+  sendJson(res, HttpStatus.CREATED, user);
 };
 
 const getUserController: ControllerWithId = async ({ res, userId }) => {
   const user = await getUserById(userId);
-  sendJson(res, 200, user);
+  sendJson(res, HttpStatus.OK, user);
 };
 
 const updateUserController: ControllerWithId = async ({ req, res, userId }) => {
   const payload = await parseJsonBody<UserUpdatePayload>(req);
   const user = await updateUserById(userId, payload);
-  sendJson(res, 200, user);
+  sendJson(res, HttpStatus.OK, user);
 };
 
 const deleteUserController: ControllerWithId = async ({ res, userId }) => {
   await deleteUserById(userId);
-  sendJson(res, 204);
+  sendJson(res, HttpStatus.NO_CONTENT);
 };
 
 export const usersController = {

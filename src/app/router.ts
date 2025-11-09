@@ -2,6 +2,8 @@ import type http from 'node:http';
 import { URL } from 'node:url';
 import { HttpError } from '../errors/http-error.js';
 import { sendJson } from '../http/index.js';
+import { HttpMessage } from '../http/messages.js';
+import { HttpStatus } from '../http/status-codes.js';
 import { usersController } from '../modules/users/index.js';
 
 export type RequestHandler = (
@@ -15,7 +17,9 @@ export const createRouter = (port: number): RequestHandler => {
       const { method, url } = req;
 
       if (!method || !url) {
-        sendJson(res, 404, { message: 'Endpoint not found' });
+        sendJson(res, HttpStatus.NOT_FOUND, {
+          message: HttpMessage.ENDPOINT_NOT_FOUND,
+        });
         return;
       }
 
@@ -24,7 +28,9 @@ export const createRouter = (port: number): RequestHandler => {
       const segments = parsedUrl.pathname.split('/').filter(Boolean);
 
       if (segments[0] !== 'api' || segments[1] !== 'users') {
-        sendJson(res, 404, { message: 'Requested resource was not found' });
+        sendJson(res, HttpStatus.NOT_FOUND, {
+          message: HttpMessage.RESOURCE_NOT_FOUND,
+        });
         return;
       }
 
@@ -39,7 +45,7 @@ export const createRouter = (port: number): RequestHandler => {
           return;
         }
 
-        sendJson(res, 405, {
+        sendJson(res, HttpStatus.METHOD_NOT_ALLOWED, {
           message: `Method ${method} is not allowed on /api/users`,
         });
         return;
@@ -62,14 +68,16 @@ export const createRouter = (port: number): RequestHandler => {
             return;
           }
           default:
-            sendJson(res, 405, {
+            sendJson(res, HttpStatus.METHOD_NOT_ALLOWED, {
               message: `Method ${method} is not allowed on /api/users/${userId}`,
             });
             return;
         }
       }
 
-      sendJson(res, 404, { message: 'Requested resource was not found' });
+      sendJson(res, HttpStatus.NOT_FOUND, {
+        message: HttpMessage.RESOURCE_NOT_FOUND,
+      });
     } catch (error) {
       if (error instanceof HttpError) {
         sendJson(res, error.statusCode, { message: error.message });
@@ -77,7 +85,9 @@ export const createRouter = (port: number): RequestHandler => {
       }
 
       console.error('UnhandledError', error);
-      sendJson(res, 500, { message: 'Internal server error' });
+      sendJson(res, HttpStatus.INTERNAL_SERVER_ERROR, {
+        message: HttpMessage.INTERNAL_SERVER_ERROR,
+      });
     }
   };
 };
